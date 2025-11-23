@@ -1,3 +1,11 @@
+The Live recorded video link 
+****************************************************************************************************************************************************************************************************************
+https://www.loom.com/share/c2c76f79a498414fac95018b7fb9e3fd
+****************************************************************************************************************************************************************************************************************
+
+
+
+
 ## 📸 Screenshots
 
 ### Main Dashboard
@@ -11,7 +19,7 @@
 
 ### Tab Sharing
 ![Tab Share](./Tabshare.png)
- 
+
 
 ScribeAI - AI-Powered Meeting Transcription App
 Real-time audio transcription and summarization using Next.js, Socket.io, and Google Gemini AI
