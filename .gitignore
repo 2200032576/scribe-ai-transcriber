@@ -42,3 +42,4 @@ next-env.d.ts
 
 # generated prisma client (optional depending on your setup)
 app/generated/prisma
+"uploads/" 
