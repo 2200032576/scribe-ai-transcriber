@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String             @id @default(cuid())
+  email            String             @unique
+  name             String?
+  password         String?
+  emailVerified    Boolean            @default(false)
+  image            String?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  accounts         Account[]
+  sessions         Session[]          // BetterAuth sessions
+  recordingSessions RecordingSession[] // Your app sessions
+  
+  @@map("users")
+}
+
+// BetterAuth Session model (required for authentication)
+model Session {
+  id           String   @id @default(cuid())
+  expiresAt    DateTime
+  token        String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  ipAddress    String?
+  userAgent    String?
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("sessions")
+}
+
+// Your app's recording sessions (renamed from Session)
+model RecordingSession {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  title       String?
+  duration    Int      @default(0)
+  audioSource String   @default("microphone")
+  
+  // ✨ NEW: Store path to saved audio file
+  audioFilePath String?
+  
+  transcript  String?  @db.Text
+  summary     String?  @db.Text
+  
+  status      String   @default("recording")
+  
+  startTime   DateTime @default(now())
+  endTime     DateTime?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  chunks      TranscriptChunk[]
+  
+  @@index([userId, createdAt])
+  @@map("recording_sessions")
+}
+
+model TranscriptChunk {
+  id        String           @id @default(cuid())
+  sessionId String
+  session   RecordingSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  text      String   @db.Text
+  timestamp Int
+  speaker   String?
+  
+  createdAt DateTime @default(now())
+  
+  @@index([sessionId, timestamp])
+  @@map("transcript_chunks")
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId         String
+  providerId        String
+  type              String?
+  password          String?  @db.Text
+  access_token      String?  @db.Text
+  refresh_token     String?  @db.Text
+  id_token          String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([providerId, accountId])
+  @@map("accounts")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}

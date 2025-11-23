@@ -1,0 +1,42 @@
+{
+  "name": "scribeai",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"next dev\" \"node server/index.js\"",
+    "dev:next": "next dev",
+    "dev:socket": "node server/index.js",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^3.0.3",
+    "better-auth": "^1.3.34",
+    "date-fns": "^4.1.0",
+    "dotenv": "^17.2.3",
+    "next": "16.0.3",
+    "prisma": "^5.22.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "zod": "^4.1.12",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.19.25",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/socket.io": "^3.0.1",
+    "concurrently": "^9.2.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
